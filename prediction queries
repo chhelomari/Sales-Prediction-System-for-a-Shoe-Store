@@ -1,0 +1,102 @@
+-- 1. Total Sales and Total Revenue for a Specific Shoe
+SELECT SUM(st.Quantity) AS TotalSales, SUM(st.TotalPrice) AS TotalRevenue
+FROM SalesTransactions st
+JOIN Shoes s ON st.ShoeID = s.ShoeID
+WHERE s.ShoeID = 1;
+
+-- 2. Day of the Week with the Most Sales (Using a Subquery)
+SELECT DayOfWeek, TotalSales
+FROM (
+    SELECT strftime('%w', SaleDate) AS DayOfWeek, SUM(TotalPrice) AS TotalSales
+    FROM SalesTransactions
+    GROUP BY DayOfWeek
+    ORDER BY TotalSales DESC
+    LIMIT 7
+) AS SalesPerDay
+ORDER BY TotalSales DESC
+LIMIT 1;
+
+-- 3. Month with the Most Sales (Using a Subquery)
+SELECT Month, TotalSales
+FROM (
+    SELECT strftime('%m', SaleDate) AS Month, SUM(TotalPrice) AS TotalSales
+    FROM SalesTransactions
+    GROUP BY Month
+    ORDER BY TotalSales DESC
+    LIMIT 12
+) AS SalesPerMonth
+ORDER BY TotalSales DESC
+LIMIT 1;
+
+-- 4. Sales Prediction for a Shoe (Based on Past Data)
+SELECT s.ShoeName, AVG(st.TotalPrice) AS PredictedSales
+FROM SalesTransactions st
+JOIN Shoes s ON st.ShoeID = s.ShoeID
+GROUP BY s.ShoeID
+ORDER BY PredictedSales DESC;
+
+-- 5. Sales for a Shoe in a Specific Month
+SELECT SUM(st.Quantity) AS TotalSales, SUM(st.TotalPrice) AS TotalRevenue
+FROM SalesTransactions st
+JOIN Shoes s ON st.ShoeID = s.ShoeID
+WHERE strftime('%m', st.SaleDate) = '12' -- December
+AND s.ShoeID = 1;
+
+-- 6. Best-Selling Shoe Based on Total Sales
+SELECT s.ShoeName, SUM(st.Quantity) AS TotalSales
+FROM SalesTransactions st
+JOIN Shoes s ON st.ShoeID = s.ShoeID
+GROUP BY s.ShoeID
+ORDER BY TotalSales DESC
+LIMIT 1;
+
+-- 7. Total Sales per Customer
+SELECT c.CustomerName, SUM(st.TotalPrice) AS TotalSales
+FROM SalesTransactions st
+JOIN Customers c ON st.CustomerID = c.CustomerID
+GROUP BY c.CustomerID;
+
+-- 8. Sales in a Specific Year (2024)
+SELECT strftime('%Y', st.SaleDate) AS SaleYear, SUM(st.TotalPrice) AS TotalSales
+FROM SalesTransactions st
+GROUP BY SaleYear
+HAVING SaleYear = '2024';
+
+-- 9. Day of the Week with the Most Sales (Using a Subquery)
+SELECT DayOfWeek, TotalSales
+FROM (
+    SELECT strftime('%w', SaleDate) AS DayOfWeek, SUM(TotalPrice) AS TotalSales
+    FROM SalesTransactions
+    GROUP BY DayOfWeek
+    ORDER BY TotalSales DESC
+    LIMIT 7
+) AS SalesPerDay
+ORDER BY TotalSales DESC
+LIMIT 1;
+
+-- 10. Month with the Most Sales (Using a Subquery)
+SELECT Month, TotalSales
+FROM (
+    SELECT strftime('%m', SaleDate) AS Month, SUM(TotalPrice) AS TotalSales
+    FROM SalesTransactions
+    GROUP BY Month
+    ORDER BY TotalSales DESC
+    LIMIT 12
+) AS SalesPerMonth
+ORDER BY TotalSales DESC
+LIMIT 1;
+
+-- 11. Sales for a Shoe in a Specific Year (2024)
+SELECT s.ShoeName, SUM(st.TotalPrice) AS TotalSales
+FROM SalesTransactions st
+JOIN Shoes s ON st.ShoeID = s.ShoeID
+WHERE strftime('%Y', st.SaleDate) = '2024'
+GROUP BY s.ShoeID;
+
+-- 12. Best-Selling Shoe Based on Total Sales
+SELECT s.ShoeName, SUM(st.Quantity) AS TotalSales
+FROM SalesTransactions st
+JOIN Shoes s ON st.ShoeID = s.ShoeID
+GROUP BY s.ShoeID
+ORDER BY TotalSales DESC
+LIMIT 1;
