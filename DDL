@@ -1,0 +1,36 @@
+CREATE TABLE Shoes (
+    ShoeID INT PRIMARY KEY,
+    Brand VARCHAR(50),
+    Type VARCHAR(50),
+    Size DECIMAL(3,1),
+    Color VARCHAR(30),
+    Price DECIMAL(10,2),
+    StockQuantity INT
+);
+
+CREATE TABLE Customers (
+    CustomerID INT PRIMARY KEY,
+    Name VARCHAR(100),
+    Address VARCHAR(255),
+    Email VARCHAR(100),
+    PhoneNumber VARCHAR(15)
+);
+
+CREATE TABLE SalesTransactions (
+    SaleID INT PRIMARY KEY,
+    CustomerID INT,
+    ShoeID INT,
+    Quantity INT,
+    SaleDate DATE,
+    TotalPrice DECIMAL(10,2),
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
+    FOREIGN KEY (ShoeID) REFERENCES Shoes(ShoeID)
+);
+
+CREATE TABLE Promotions (
+    PromoID INT PRIMARY KEY,
+    PromoCode VARCHAR(20),
+    DiscountAmount DECIMAL(5,2),
+    StartDate DATE,
+    EndDate DATE
+);
